@@ -1,15 +1,25 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient } from "mongodb";
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017';
-const DB_NAME = process.env.DB_NAME || 'reports';
+const MONGODB_URI = "mongodb://127.0.0.1:27017/school?directConnection=true";
 
 export async function connectDB() {
-  try {
-    const client = await MongoClient.connect(MONGODB_URI);
-    console.log('MongoDB connected');
-    return client.db(DB_NAME);
-  } catch (error) {
-    console.error('MongoDB connection error:', error);
-    process.exit(1);
-  }
+  await connectToCluster(MONGODB_URI);
 }
+
+import { MongoClient } from "mongodb";
+
+const MONGODB_URI = "mongodb://localhost:27017"; // Replace with your MongoDB URI
+const client = new MongoClient(uri);
+
+export const connectToDatabase = async () => {
+  try {
+    await client.connect();
+    console.log("Connected to MongoDB");
+    return client.db("my_database"); // Replace with your database name
+  } catch (error) {
+    console.error("Could not connect to MongoDB", error);
+    throw error;
+  }
+};
+
+export default client;
